@@ -1,7 +1,10 @@
 <?php
-require_once "lib/nusoap.php";
-global $server;
-$server = new soap_server();
+include_once 'lib/nusoap.php';
+$servicio = new soap_server();
+
+$ns = "urn:peliculaswsdl";
+$servicio->configureWSDL("ServicioPeliculas", $ns);
+$servicio->schemaTargetNamespace = $ns;
 
 function get_peliculas($decada) {
     if ($decada == "1930") {
@@ -33,13 +36,15 @@ function get_peliculas($decada) {
             "Duna",
             "CODA",
             "Tik, Tik, Boom!"));
-    } 
-    else {
-        return join(" ", array("RESULTADO NO ENCONTRADO"));
-    } 
+    } else {
+        return "RESULTADO NO ENCONTRADO";
+    }
 }
 
-$server->register("get_peliculas");
-$httpPost = file_get_contents( 'php://input' ); 
-$server->service($httpPost);
+$servicio->register(
+    "get_peliculas"
+);
+
+$HTTP_RAW_POST_DATA = isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : file_get_contents('php://input');
+$servicio->service($HTTP_RAW_POST_DATA);
 ?>
