@@ -1,0 +1,1 @@
+Ejercicio Resuelto, visualizar si funciona la conexión y el rollback.
