@@ -11,6 +11,7 @@ public class Transaccion {
 
     // Método para actualizar las ventas de café
     public static void updateCoffeeSales(Connection con, HashMap<String, Integer> salesForWeek) throws SQLException {
+        // Consultas SQL para actualizar las ventas y el total de ventas
         String updateSalesString = "UPDATE COFFEES SET SALES = ? WHERE COF_NAME = ?";
         String updateTotalString = "UPDATE COFFEES SET TOTAL = TOTAL + ? WHERE COF_NAME = ?";
 
@@ -19,14 +20,17 @@ public class Transaccion {
 
             con.setAutoCommit(false); // Desactivar autocommit
 
+            // Iterar sobre las ventas semanales proporcionadas
             for (Map.Entry<String, Integer> entry : salesForWeek.entrySet()) {
+                // Configurar los parámetros para la consulta de actualización de SALES
                 updateSales.setInt(1, entry.getValue());
                 updateSales.setString(2, entry.getKey());
-                updateSales.executeUpdate();
+                updateSales.executeUpdate(); // Ejecutar la consulta de actualización de SALES
 
+                // Configurar los parámetros para la consulta de actualización de TOTAL
                 updateTotal.setInt(1, entry.getValue());
                 updateTotal.setString(2, entry.getKey());
-                updateTotal.executeUpdate();
+                updateTotal.executeUpdate(); // Ejecutar la consulta de actualización de TOTAL
             }
 
             con.commit(); // Confirmar la transacción
@@ -40,7 +44,7 @@ public class Transaccion {
                     excep.printStackTrace();
                 }
             }
-            e.printStackTrace();
+            e.printStackTrace(); // Imprimir la traza de la excepción
         } finally {
             con.setAutoCommit(true); // Volver a habilitar autocommit
         }
@@ -52,14 +56,16 @@ public class Transaccion {
         String password = ""; // Contraseña de MySQL (deja en blanco si no tienes contraseña)
 
         try (Connection con = DriverManager.getConnection(url, user, password)) {
+            // Crear un mapa para almacenar las ventas semanales de café
             HashMap<String, Integer> salesForWeek = new HashMap<>();
             salesForWeek.put("Colombian", 50);
             salesForWeek.put("French_Roast", 75);
             salesForWeek.put("Espresso", 100);
 
-            updateCoffeeSales(con, salesForWeek); // Actualizar ventas de café
+            // Llamar al método para actualizar las ventas de café
+            updateCoffeeSales(con, salesForWeek);
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Imprimir la traza de la excepción si ocurre un error SQL
         }
     }
 }
