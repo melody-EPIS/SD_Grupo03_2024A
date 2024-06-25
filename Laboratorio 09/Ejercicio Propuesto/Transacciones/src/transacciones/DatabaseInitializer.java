@@ -14,8 +14,8 @@ public class DatabaseInitializer {
 
     public static void initializeDatabase() throws SQLException {
         String url = "jdbc:mysql://localhost:3307/";
-        String user = "root"; // Usuario de MySQL
-        String password = ""; // Contraseña de MySQL (deja en blanco si no tienes contraseña)
+        String user = "root";
+        String password = ""; 
         String dbName = "coffee_shop";
 
         try (Connection con = DriverManager.getConnection(url, user, password);
