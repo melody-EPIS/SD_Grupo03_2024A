@@ -13,19 +13,26 @@ import java.sql.Statement;
 public class DatabaseInitializer {
 
     public static void initializeDatabase() throws SQLException {
+        // URL de la base de datos MySQL
         String url = "jdbc:mysql://localhost:3307/";
+        
+        // Usuario de la base de datos
         String user = "root";
+        
+        // Contraseña del usuario de la base de datos
         String password = ""; 
+        
+        // Nombre de la base de datos que vamos a crear o conectar
         String dbName = "coffee_shop";
 
         try (Connection con = DriverManager.getConnection(url, user, password);
              Statement stmt = con.createStatement()) {
-
+            
             // Crear la base de datos si no existe
             String createDatabaseSQL = "CREATE DATABASE IF NOT EXISTS " + dbName;
             stmt.executeUpdate(createDatabaseSQL);
 
-            // Conectar a la base de datos específica
+            // Conectar a la base de datos específica (coffee_shop)
             String dbUrl = url + dbName;
             try (Connection dbCon = DriverManager.getConnection(dbUrl, user, password);
                  Statement dbStmt = dbCon.createStatement()) {
@@ -65,4 +72,5 @@ public class DatabaseInitializer {
         }
     }
 }
+
 
